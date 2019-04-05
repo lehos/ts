@@ -19,14 +19,8 @@ interface Obj {
 }
 
 const objArr: Obj[] = [
-  {
-    id: '1',
-    foo: 'bar'
-  },
-  {
-    id: '2',
-    foo: 'baz'
-  }
+  { id: '1', foo: 'bar' },
+  { id: '2', foo: 'baz' }
 ]
 
 
