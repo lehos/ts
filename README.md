@@ -23,7 +23,6 @@ const objArr: Obj[] = [
   { id: '2', foo: 'baz' }
 ]
 
-
-// obj has type Record<string, Obj>
+// objRec has type Record<string, Obj>
 const objRec = arrayToRecord(objArr)
 ```
