@@ -5,9 +5,9 @@
 ```typescript
 function arrayToRecord<T extends { id: string }>(obj: T[]): Record<string, T> {
   return obj.reduce((acc, cur) => {
-    acc[cur.id] = cur;
-    return acc;
-  }, {});
+    acc[cur.id] = cur
+    return acc
+  }, {})
 }
 
 
@@ -25,5 +25,5 @@ const objArr: Obj[] = [
 
 
 // obj has type Record<string, Obj>
-const objRec = arrayToRecord(objArr);
+const objRec = arrayToRecord(objArr)
 ```
