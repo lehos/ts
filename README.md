@@ -83,3 +83,28 @@ type Keys = keyof typeof obj
 type Keys = 'foo' | 'bar' | 'baz'
 
 ```
+
+
+## Pick Type From Union
+```typescript
+type PickFromUnion<T, K> = Extract<T, { kind: K }>;
+
+
+// usage
+
+type Foo = {
+    kind: 'foo'
+    prop: string
+}
+
+type Bar = {
+    kind: 'bar',
+    prop: number;
+}
+
+type PickedBar = PickFromUnion<Foo | Bar, 'bar'>
+// {
+//   kind: 'bar',
+//   prop: number;
+// }
+``` 
