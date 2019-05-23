@@ -3,6 +3,7 @@
 ## Common types
 
 ```typescript
+// temp, waiting for TS 3.5
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 // https://github.com/Microsoft/TypeScript/issues/14094#issuecomment-373782604
@@ -38,8 +39,8 @@ const objArr: Obj[] = [
   { id: '2', foo: 'baz' }
 ]
 
-// objRec has type Record<string, Obj>
 const objRec = arrayToRecord(objArr)
+// Record<string, Obj>
 ```
 
 ## Make type with keys from union of strings
@@ -47,13 +48,11 @@ const objRec = arrayToRecord(objArr)
 type Keys = 'foo' | 'bar' | 'baz'
 
 type Obj = {[key in Keys]: any}
-
-// now Obj is like:
-type Obj = {
-  foo: any
-  bar: any
-  baz: any
-}
+// {
+//   foo: any
+//   bar: any
+//   baz: any
+// }
 ```
 
 
@@ -65,23 +64,18 @@ const obj = {
   baz: true,
 }
 
-type Obj = typeof obj
-
-// now Obj type is:
-type Obj = {
-  foo: number
-  bar: string
-  baz: boolean
-}
+type ObjType = typeof obj
+// {
+//   foo: number
+//   bar: string
+//   baz: boolean
+// }
 
 
-type Keys = keyof Obj
+type Keys = keyof ObjType
 // or
 type Keys = keyof typeof obj
-
-// now Keys type is:
-type Keys = 'foo' | 'bar' | 'baz'
-
+// 'foo' | 'bar' | 'baz'
 ```
 
 
