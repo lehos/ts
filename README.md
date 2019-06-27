@@ -126,3 +126,5 @@ type Bar = Brand<string, 'Bar'>;
 
 // Foo is not assignable to Bar
 ```
+see [Nominal typing in TS](https://michalzalecki.com/nominal-typing-in-typescript/)
+
