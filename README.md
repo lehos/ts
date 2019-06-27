@@ -115,3 +115,14 @@ type Roles = typeof roles
 type RoleValues = Roles[keyof Roles]
 // ''ROLE_USER' | 'ROLE_ADMIN'
 ```
+
+
+## Branded types
+```typescript
+type Brand<K, T> = K & { __brand: T };
+
+type Foo = Brand<string, 'Foo'>;
+type Bar = Brand<string, 'Bar'>;
+
+// Foo is not assignable to Bar
+```
