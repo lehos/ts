@@ -102,3 +102,16 @@ type PickedBar = PickFromUnion<Foo | Bar, 'bar'>
 //   prop: number;
 // }
 ``` 
+
+
+## Make union of values from enum-like object
+```typescript
+const roles = {
+  User: 'ROLE_USER' as const,
+  Admin: 'ROLE_ADMIN' as const,
+} 
+
+type Roles = typeof roles
+type RoleValues = Roles[keyof Roles]
+// ''ROLE_USER' | 'ROLE_ADMIN'
+```
