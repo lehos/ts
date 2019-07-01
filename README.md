@@ -16,6 +16,17 @@ type XOR<T, U> = (T | U) extends object
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 ```
 
+## Recursive partial
+```typescript
+type RecursivePartial<T> = {
+  [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object ? RecursivePartial<T[P]> :
+    T[P];
+};
+```
+
+
 ## Convert Array to Record
 
 ```typescript
