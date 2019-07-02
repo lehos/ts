@@ -1,20 +1,52 @@
 # TypeScript tips & tricks
 
-## Common types
 
+## Make type with keys from union of strings
 ```typescript
-// temp, waiting for TS 3.5
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+type Keys = 'foo' | 'bar' | 'baz'
 
-// https://github.com/Microsoft/TypeScript/issues/14094#issuecomment-373782604
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-type XOR<T, U> = (T | U) extends object 
-    ? (Without<T, U> & U) | (Without<U, T> & T) 
-    : T | U;
-
-// make one field optional 
-type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+type Obj = {[key in Keys]: any}
+// {
+//   foo: any
+//   bar: any
+//   baz: any
+// }
 ```
+
+## Make type from object and type from object keys
+```typescript
+const obj = {
+  foo: 1,
+  bar: 'hello',
+  baz: true,
+}
+
+type ObjType = typeof obj
+// {
+//   foo: number
+//   bar: string
+//   baz: boolean
+// }
+
+
+type Keys = keyof ObjType
+// or
+type Keys = keyof typeof obj
+// 'foo' | 'bar' | 'baz'
+```
+
+## Make union of values from enum-like object
+```typescript
+const roles = {
+  User: 'ROLE_USER',
+  Admin: 'ROLE_ADMIN',
+} as const
+
+type Roles = typeof roles
+type RoleValues = Roles[keyof Roles]
+// ''ROLE_USER' | 'ROLE_ADMIN'
+```
+
 
 ## Recursive partial
 ```typescript
@@ -54,41 +86,6 @@ const objRec = arrayToRecord(objArr)
 // Record<string, Obj>
 ```
 
-## Make type with keys from union of strings
-```typescript
-type Keys = 'foo' | 'bar' | 'baz'
-
-type Obj = {[key in Keys]: any}
-// {
-//   foo: any
-//   bar: any
-//   baz: any
-// }
-```
-
-
-## Make type from object and type from object keys
-```typescript
-const obj = {
-  foo: 1,
-  bar: 'hello',
-  baz: true,
-}
-
-type ObjType = typeof obj
-// {
-//   foo: number
-//   bar: string
-//   baz: boolean
-// }
-
-
-type Keys = keyof ObjType
-// or
-type Keys = keyof typeof obj
-// 'foo' | 'bar' | 'baz'
-```
-
 
 ## Pick Type From Union
 ```typescript
@@ -115,17 +112,6 @@ type PickedBar = PickFromUnion<Foo | Bar, 'bar'>
 ``` 
 
 
-## Make union of values from enum-like object
-```typescript
-const roles = {
-  User: 'ROLE_USER',
-  Admin: 'ROLE_ADMIN',
-} as const
-
-type Roles = typeof roles
-type RoleValues = Roles[keyof Roles]
-// ''ROLE_USER' | 'ROLE_ADMIN'
-```
 
 
 ## Branded types
@@ -139,3 +125,18 @@ type Bar = Brand<string, 'Bar'>;
 ```
 see [Nominal typing in TS](https://michalzalecki.com/nominal-typing-in-typescript/)
 
+## Common types
+
+```typescript
+// temp, waiting for TS 3.5
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
+// https://github.com/Microsoft/TypeScript/issues/14094#issuecomment-373782604
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+type XOR<T, U> = (T | U) extends object 
+    ? (Without<T, U> & U) | (Without<U, T> & T) 
+    : T | U;
+
+// make one field optional 
+type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+```
