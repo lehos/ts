@@ -112,6 +112,16 @@ type PickedBar = PickFromUnion<Foo | Bar, 'bar'>
 ``` 
 
 
+type Foo = {
+  bar: string;
+  baz: number;
+  xyz: string;
+}
+
+type Oof = ... // => "bar"|"xyz"
+
+export type FieldsOfType<S, T> = { [K in keyof S]: S[K] extends T ? K : never }[keyof S];
+
 
 
 ## Branded types
