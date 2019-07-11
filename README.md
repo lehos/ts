@@ -111,7 +111,21 @@ type PickedBar = PickFromUnion<Foo | Bar, 'bar'>
 // }
 ``` 
 
+##  Fields of type
 
+```typescript
+type FieldsOfType<S, T> = { [K in keyof S]: S[K] extends T ? K : never }[keyof S];
+
+// usage
+type Foo = {
+  bar: string;
+  baz: number;
+  xyz: string;
+}
+
+type Bar = FieldsOfType<Foo, string> 
+// 'bar' | 'xyz'
+```
 
 
 ## Branded types
