@@ -142,9 +142,6 @@ see [Nominal typing in TS](https://michalzalecki.com/nominal-typing-in-typescrip
 ## Common types
 
 ```typescript
-// temp, waiting for TS 3.5
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-
 // https://github.com/Microsoft/TypeScript/issues/14094#issuecomment-373782604
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = (T | U) extends object 
@@ -154,3 +151,31 @@ type XOR<T, U> = (T | U) extends object
 // make one field optional 
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 ```
+
+## Props dependent on other props (React)
+[Playground](http://www.typescriptlang.org/play/index.html?jsx=2#code/JYWwDg9gTgLgBAJQKYEMDG8BmUIjgcilQ3wG4AocmATzCTgFkUBnAazgF45mYpgA7AOZwAPnAAU4gJScAfHBT9qUilVr0ACjjDMAPAzhIAHjCT8AJs0YtW8rgG9ycOCBsAuRhWcBXfq7YA-B4ARhAQADao-BQAvnAAZBIGxqYWVgBy3iDBSFAAwhD8PFDeGNBwAXD2cPxZOVBaEGBB3LwCwnEe9jEqlJi+GMCFcAXg+oYmZpbWbLLiYNrMHo06+rIyjs5EMN5Q-HC6sgAWSOHhELoA9LKxfQMwQ-sAKkg8o2DSVU5w27v74t9nIdAc4Du8XDYOPZMtlcnFarCGtoOPhguEUPg4NcQUDwf5WFCYfV4XVcisUWiMXAAO44IQrLGyHFg3BgCFsQmkqAkxEM7Gg0G6PGQ+yfDjyTAocLMJA8+p8pkC3Gs9kE+z4Zi4ejFdr4OVk7SM5lClX4qEarWtPhCPVGgVXRVwXoxIA)
+
+```typescript jsx
+type Mask = string | (() => any);
+
+type Props<M extends Mask> = {
+  mask: M;
+  unmask?: boolean;
+} & (M extends NumberConstructor ? { numberProp?: string } : {});
+
+function Comp<M extends Mask>(props: Props<M>) {
+  return <>hello</>;
+}
+
+function TestComp() {
+  return (
+    <>
+      <Comp mask={Number} numberProp='bla' /> // ok
+      <Comp mask={Number} numberProp='bla' wrongProp /> // err, unknown prop
+      <Comp mask={Number} numberProp /> // err, numberProp wrong type
+      <Comp mask={() => false} numberProp /> // err, numberProp only for Number
+      <Comp mask={'some string'} numberProp /> // err, numberProp only for Number
+      <Comp mask={'some string'} /> // ok
+    </>
+  )
+``` 
