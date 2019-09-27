@@ -132,10 +132,10 @@ type Bar = FieldsOfType<Foo, string>
 ```typescript
 type Brand<K, T> = K & { __brand: T };
 
-type Foo = Brand<string, 'Foo'>;
-type Bar = Brand<string, 'Bar'>;
+type AppDate = Brand<string, 'AppDate'>; // eg 25.12.2019
+type ApiDate = Brand<string, 'ApiDate'>; // eg 2019-12-25
 
-// Foo is not assignable to Bar
+// AppDate is not assignable to ApiDate
 ```
 see [Nominal typing in TS](https://michalzalecki.com/nominal-typing-in-typescript/)
 
